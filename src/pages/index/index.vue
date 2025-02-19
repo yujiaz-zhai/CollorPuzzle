@@ -73,7 +73,7 @@
     <nut-col :span="24">
       <nut-grid :column-num="4" :gutter="0">
         <nut-grid-item v-for="(n, index) in 4" :key="n">
-          <nut-button :style="ansStyles[index]" :class="'ans-' + n" class="ans-overall"></nut-button>
+          <nut-button :style="ansStyles[index]" :class="'ans-' + n" class="ans-overall" @click="Trigger"></nut-button>
         </nut-grid-item>
       </nut-grid>
     </nut-col>
@@ -96,6 +96,7 @@ import Taro from '@tarojs/taro';
 // 6: purple
 
 const playerlevel = ref(1);
+const trigger = ref(0);
 
 const btnStyles = ref(Array(40).fill({ backgroundColor: "transparent !important" }));
 const tipStyles = ref(Array(40).fill({ backgroundColor: "gray" }));
@@ -125,6 +126,15 @@ onMounted(() => {
 });
 
 const ResetGame = () =>{
+  if(trigger.value === 6){
+    ShowAnswer();
+    Taro.showToast({
+      title: "????????",
+      icon: "success",
+      duration: 2000
+    });
+    trigger.value = 0;
+  }else{
   answer.ans1 = Math.floor(Math.random() * 6) + 1;
   answer.ans2 = Math.floor(Math.random() * 6) + 1;
   answer.ans3 = Math.floor(Math.random() * 6) + 1;
@@ -150,6 +160,8 @@ const ResetGame = () =>{
       backgroundColor: "transparent !important"
     };
   }
+  trigger.value = 0;
+}
 }
 
 // 获取颜色的辅助函数
@@ -305,6 +317,10 @@ const ShowAnswer = () => {
   }
 }
 
+const Trigger = () => {
+  trigger.value++;
+  console.log(trigger.value);
+}
 
 
 
